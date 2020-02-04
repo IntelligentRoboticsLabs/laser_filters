@@ -96,8 +96,7 @@ public:
 
     std::function<void(const sensor_msgs::msg::LaserScan::SharedPtr)> standard_callback =
       std::bind(&GenericLaserScanFilterNode::foo, this, std::placeholders::_1);
-    nh_->create_subscription<sensor_msgs::msg::LaserScan>("scan", standard_callback,
-      rmw_qos_profile_default);
+    nh_->create_subscription<sensor_msgs::msg::LaserScan>("scan", rclcpp::QoS(10), standard_callback);
 
     deprecation_timer_ =
       nh_->create_wall_timer(std::chrono::milliseconds(5000),
