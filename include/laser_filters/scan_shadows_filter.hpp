@@ -98,30 +98,6 @@ public:
       RCLCPP_INFO(laser_filters_logger, "Error: ShadowsFilter was not given neighbors.\n");
     }
 
-    if (min_angle_ < 0)
-    {
-      ROS_ERROR("min_angle must be 0 <= min_angle. Forcing min_angle = 0.\n");
-      min_angle_ = 0.0;
-    }
-    if (90 < min_angle_)
-    {
-      ROS_ERROR("min_angle must be min_angle <= 90. Forcing min_angle = 90.\n");
-      min_angle_ = 90.0;
-    }
-    if (max_angle_ < 90)
-    {
-      ROS_ERROR("max_angle must be 90 <= max_angle. Forcing max_angle = 90.\n");
-      max_angle_ = 90.0;
-    }
-    if (180 < min_angle_)
-    {
-      ROS_ERROR("max_angle must be max_angle <= 180. Forcing max_angle = 180.\n");
-      max_angle_ = 180.0;
-    }
-    shadow_detector_.configure(
-        angles::from_degrees(min_angle_),
-        angles::from_degrees(max_angle_));
-
     return true;
   }
 
@@ -132,7 +108,9 @@ public:
    * See http://en.wikipedia.org/wiki/Law_of_cosines */
   inline double getAngleWithViewpoint(float r1, float r2, float included_angle)
   {
+    return atan2(r2 * sin(included_angle), r1 - r2 * cos(included_angle));
   }
+
 
   ////////////////////////////////////////////////////////////////////////////////
   /** \brief Filter shadow points based on 3 global parameters: min_angle, max_angle
