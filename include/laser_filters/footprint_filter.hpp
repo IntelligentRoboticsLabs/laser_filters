@@ -85,8 +85,9 @@ public:
     sensor_msgs::msg::PointCloud laser_cloud;
 
     try {
-      projector_.transformLaserScanToPointCloud("base_link", input_scan, laser_cloud, buffer_,
-        laser_geometry::channel_option::Intensity);
+      //projector_.transformLaserScanToPointCloud("base_link", input_scan, laser_cloud, buffer_,
+      //  laser_geometry::channel_option::Intensity);
+      throw tf2::TransformException("no idea");
     } catch (tf2::TransformException & ex) {
       if (up_and_running_) {
         RCLCPP_WARN(laser_filters_logger, "Dropping Scan: Transform unavailable %s", ex.what());
